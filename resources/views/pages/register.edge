@@ -1,0 +1,40 @@
+@layout.app({title: "Register Page - COMPFEST Certificate"})
+
+<div class="relative w-full flex flex-col items-center top-20">
+  <div class="relative w-[50%] flex flex-col bg-white shadow-xl rounded-xl p-4 items-center">
+    <div class="relative w-full flex flex-col gap-4">
+      <h1 class="font-bold text-2xl text-center">COMPFEST Certificate Dashboard Register</h1>
+      <hr class="w-full border border-[#1A22231A]">
+    </div>
+
+    <div class="relative w-full flex flex-col py-10 px-10">
+      <form hx-post="/auth/register" hx-target="#response" hx-swap="outerHTML" class="flex flex-col gap-10">  
+        {{ csrfField() }}
+        <div class="space-y-5">
+          <div class="flex flex-col gap-2">
+            <label for="fullName">Full Name</label>
+            <input class="border border-slate rounded-lg px-2" id="fullName" name="fullName" type="text" required/>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="Email">Email</label>
+            <input class="border border-slate rounded-lg px-2" id="email" name="email" type="email" required/>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="password">Password</label>
+            <input class="border border-slate rounded-lg px-2" id="password" name="password" type="password" required/>
+          </div>
+
+        </div>
+        <button class="bg-competition px-4 py-1 font-bold text-center mx-auto text-[#FFFFFF] rounded-lg w-full">Register</button>
+      </form>
+    </div>
+
+    <div id="response">
+
+    </div>
+  </div>
+</div>
+    
+@end

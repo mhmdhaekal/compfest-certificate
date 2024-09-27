@@ -43,4 +43,11 @@ export default await Env.create(new URL('../', import.meta.url), {
   SES_ACCESS_KEY: Env.schema.string(),
   SES_ACCESS_SECRET: Env.schema.string(),
   SES_REGION: Env.schema.string(),
+
+  /*
+  |----------------------------------------------------------
+  | Variables for configuring session package
+  |----------------------------------------------------------
+  */
+  SESSION_DRIVER: Env.schema.enum(['cookie', 'memory'] as const),
 })

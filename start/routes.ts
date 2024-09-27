@@ -8,17 +8,16 @@
 */
 
 import router from '@adonisjs/core/services/router'
+import { middleware } from '#start/kernel'
 
 const CertificateController = () => import('#certificate/certificates_controller')
 const UploadController = () => import('#upload/upload_controller')
 const VerifyController = () => import('#verify/verify_controller')
 const EmailController = () => import('#email/email_controller')
+const AuthController = () => import('#authentication/auth_controller')
+const DashboardController = () => import('#dashboard/dashboard_controller')
 
-router.get('/', async () => {
-  return {
-    hello: 'world',
-  }
-})
+router.get('/', [DashboardController, 'renderDashboard']).use(middleware.silent_auth())
 
 router
   .post('/certificate/:templateId', [CertificateController, 'createIndividualCertificate'])
@@ -51,3 +50,9 @@ router
 router
   .get('/email/certificate-template/:templateId', [EmailController, 'sendBatchEmail'])
   .where('templateId', { cast: (value) => String(value) })
+
+router.get('/auth/login', [AuthController, 'renderLogin'])
+router.post('/auth/login', [AuthController, 'login'])
+
+router.get('/auth/register', [AuthController, 'renderRegister'])
+router.post('/auth/register', [AuthController, 'register'])
