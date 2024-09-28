@@ -19,6 +19,9 @@ export default class AuthController {
     }
     try {
       const user = await User.verifyCredentials(email, password)
+      if (!user.authorizedToLogin) {
+        return '<p>You do not have authorize to login</p>'
+      }
       await auth.use('web').login(user)
       response.append('HX-Redirect', '/')
       return 'OK'

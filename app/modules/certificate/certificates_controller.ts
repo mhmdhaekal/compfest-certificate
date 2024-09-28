@@ -17,8 +17,32 @@ export default class CertificatesController {
       templateId: params.templateId,
       name: payload.name,
     })
-    response.safeHeader('Content-Type', 'application/pdf')
+    const hxRequestValue = request.header('HX-Request')
+    console.log(hxRequestValue)
+    if (hxRequestValue) {
+      const base64Pdf = template.toString('base64')
+      const htmlResponse = `
+        <script>
+          function downloadPDF() {
+            const pdfData = atob('${base64Pdf}');
+            const pdfBlob = new Blob([new Uint8Array(pdfData.length).map((_, i) => pdfData.charCodeAt(i))], {type: 'application/pdf'});
+            const downloadUrl = URL.createObjectURL(pdfBlob);
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = '${payload.name}.pdf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(downloadUrl);
+          }
+          downloadPDF();
+        </script>
+      `
+      return htmlResponse
+    }
 
+    response.safeHeader('Content-Type', 'application/pdf')
+    response.header('Content-Disposition', `attachment; filename="${payload.name}.pdf"`)
     return response.send(template)
   }
 

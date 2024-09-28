@@ -1,0 +1,41 @@
+@layout.app()
+<div class="w-full overflow-scroll mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6">Recipients for {{ template.eventName }}</h1>
+    <div class="w-full overflow-x-auto bg-white shadow-md rounded-lg">
+      <table class="min-w-full table-auto">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="px-4 py-2 text-left w-[300px]">No</th>
+            <th class="px-4 py-2 text-left w-[300px]">Recipient Name</th>
+            <th class="px-4 py-2 text-left w-[300px]">Email</th>
+            <th class="px-4 py-2 text-left w-[300px]">Award (ID)</th>
+            <th class="px-4 py-2 text-left w-[300px]">Award (EN)</th>
+            <th class="px-4 py-2 text-left w-[400px]">Activity Name (ID)</th>
+            <th class="px-4 py-2 text-left w-[400px]">Activity Name (EN)</th>
+            <th class="px-4 py-2 text-left w-[300px]">Issued On</th>
+          </tr>
+        </thead>
+        <tbody>
+          @each((recipient, index) in recipients)
+            <tr class="border-b hover:bg-gray-50">
+              <td class="px-4 py-2">{{ index+1 }}</td>
+              <td class="px-4 py-2">{{ recipient.recipientName }}</td>
+              <td class="px-4 py-2">{{ recipient.recipientEmail }}</td>
+              <td class="px-4 py-2">{{ recipient.recipientAwardId }}</td>
+              <td class="px-4 py-2">{{ recipient.recipientAwardEn }}</td>
+              <td class="px-4 py-2">{{ recipient.activityNameId }}</td>
+              <td class="px-4 py-2">{{ recipient.activityNameEn }}</td>
+              <td class="px-4 py-2">
+                @if(recipient.issuedOn && typeof recipient.issuedOn.toFormat === 'function')
+                  {{ recipient.issuedOn.toFormat('dd LLL yyyy') }}
+                @else
+                  N/A
+                @end
+              </td>
+            </tr>
+          @end
+        </tbody>
+      </table>
+    </div>
+  </div>
+@end

@@ -32,6 +32,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   VERIFY_HOST: Env.schema.string(),
   VERIFY_PORT: Env.schema.number(),
   COMPFEST_VERIFY_URL: Env.schema.string(),
+  ASSET_URL: Env.schema.string(),
   YEAR: Env.schema.string(),
   AWS_ACCESS_KEY: Env.schema.string(),
   AWS_ACCESS_SECRET: Env.schema.string(),

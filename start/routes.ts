@@ -18,37 +18,52 @@ const AuthController = () => import('#authentication/auth_controller')
 const DashboardController = () => import('#dashboard/dashboard_controller')
 
 router.get('/', [DashboardController, 'renderDashboard']).use(middleware.silent_auth())
-
 router
-  .post('/certificate/:templateId', [CertificateController, 'createIndividualCertificate'])
+  .get('/certificate/:templateId/recipient', [DashboardController, 'renderRecipient'])
+  .where('templateId', { cast: (value) => String(value) })
+  .use(middleware.silent_auth())
+router
+  .post('api/certificate/filter', [DashboardController, 'filterCertificateTemplate'])
+  .use(middleware.silent_auth())
+router
+  .get('/certificate/new-template', [DashboardController, 'renderNewCertificateTemplate'])
+  .use(middleware.silent_auth())
+router
+  .post('/certificate/new-template', [DashboardController, 'newCertificateTemplate'])
+  .use(middleware.silent_auth())
+router
+  .post('/api/certificate/:templateId', [CertificateController, 'createIndividualCertificate'])
   .where('templateId', { cast: (value) => String(value) })
 
 router
-  .post('/certificate/:templateId/parse', [CertificateController, 'importCertificateFromCSV'])
+  .post('/api/certificate/:templateId/parse', [CertificateController, 'importCertificateFromCSV'])
   .where('templateId', { cast: (value) => String(value) })
 
 router
-  .get('/certificate/:certificateId/pdf', [CertificateController, 'exportCertificatePdf'])
+  .get('/api/certificate/:certificateId/pdf', [CertificateController, 'exportCertificatePdf'])
   .where('certificateId', { cast: (value) => String(value) })
 
 router
-  .get('/certificate/:certificateId/image', [CertificateController, 'exportCertificateJpg'])
+  .get('/api/certificate/:certificateId/image', [CertificateController, 'exportCertificateJpg'])
   .where('certificateId', { cast: (value) => String(value) })
 
 router
-  .get('/upload/certificate/:certificateId', [UploadController, 'uploadIndividualCertificate'])
+  .get('/api/upload/certificate/:certificateId', [UploadController, 'uploadIndividualCertificate'])
   .where('certificateId', { cast: (value) => String(value) })
 
 router
-  .get('/upload/certificate-template/:templateId', [UploadController, 'uploadBatchCertificate'])
+  .get('/api/upload/certificate-template/:templateId', [UploadController, 'uploadBatchCertificate'])
   .where('templateId', { cast: (value) => String(value) })
 
 router
-  .get('/verify/certificate-template/:templateId', [VerifyController, 'verifyGeneratedCertificate'])
+  .get('/api/verify/certificate-template/:templateId', [
+    VerifyController,
+    'verifyGeneratedCertificate',
+  ])
   .where('templateId', { cast: (value) => String(value) })
 
 router
-  .get('/email/certificate-template/:templateId', [EmailController, 'sendBatchEmail'])
+  .get('/api/email/certificate-template/:templateId', [EmailController, 'sendBatchEmail'])
   .where('templateId', { cast: (value) => String(value) })
 
 router.get('/auth/login', [AuthController, 'renderLogin'])

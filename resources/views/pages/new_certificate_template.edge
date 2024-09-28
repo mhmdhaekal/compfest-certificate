@@ -1,0 +1,97 @@
+@layout.app() 
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="font-bold text-2xl">New Certificate Template</h1>
+        <form hx-post="/certificate/new-template" hx-target="#response" class="space-y-5" hx-encoding='multipart/form-data' id="form">
+            {{csrfField()}}
+            <div class="space-y-5 flex flex-col">
+                <label for="eventName">Event Name</label>
+                <input class="border border-slate rounded-lg px-2" id="eventName" name="eventName" type="text" required/>
+            </div>
+
+            <div class="space-y-5 flex flex-col">
+                <label for="eventName">Award Name</label>
+                <input class="border border-slate rounded-lg px-2" id="awardName" name="awardName" type="text" required/>
+            </div>
+
+            <div class="space-y-5 flex flex-col">
+                <label for="width">Width</label>
+                <input class="border border-slate rounded-lg px-2" id="width" name="width" type="number" required/>
+            </div>
+
+            <div class="space-y-5 flex flex-col">
+                <label for="height">Heigth</label>
+                <input class="border border-slate rounded-lg px-2" id="height" name="height" type="number" required/>
+            </div>
+            
+            <div class="space-y-5 flex flex-col">
+                <label for="labelPosition">Label Position</label>
+                <input class="border border-slate rounded-lg px-2" id="labelPosition" name="labelPosition" type="number" required/>
+            </div>
+
+            <div class="space-y-5 flex flex-col">
+                <label for="bottomTextPosition">Bottom Text Position</label>
+                <input class="border border-slate rounded-lg px-2" id="bottomTextPosition" name="bottomTextPosition" type="number" required/>
+            </div>
+
+            <div class="space-y-5 flex flex-col">
+                <label for="margin">Margin</label>
+                <input class="border border-slate rounded-lg px-2" id="margin" name="margin" type="number" required/>
+            </div>
+
+            <div class="space-y-5 flex flex-col">
+                <label for="margin">Department</label>
+                <select 
+                id="department" 
+                name="department" 
+                class="block w-full px-3 py-1 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                required
+                >
+                    <option value="" disabled selected>Select a department</option>
+                    @each(department in departments)
+                        <option value="{{department.ID}}">{{department.nameEn}}</option>
+                    @end
+                </select>
+            </div>
+
+            <div class="space-y-5 flex flex-col">
+                <label for="margin">Image</label>
+                <div class="relative" x-data="fileInput()">
+                  <input 
+                    type="file" 
+                    id="image" 
+                    name="image" 
+                    required 
+                    x-ref="fileInput" 
+                    @change="handleFileChange" 
+                    class="absolute inset-0 w-full h-full opacity-0 z-10 cursor-pointer" 
+                    accept="image/jpeg, image/jpg">
+                  <div class="flex items-center justify-between border border-gray-300 rounded-lg px-4 py-2 bg-white">
+                    <span x-text="fileName" class="text-sm text-gray-500 truncate"></span>
+                    <button 
+                      type="button" 
+                      @click.prevent="$refs.fileInput.click()" 
+                      class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                      Choose File
+                    </button>
+                  </div>
+                </div>
+                <button type="submit" class="bg-competition px-4 py-1 font-bold text-center mx-auto text-[#FFFFFF] rounded-lg w-full">Create</button>
+
+            </div>
+            <div id="response">
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function fileInput() {
+          return {
+            fileName: 'No file chosen',
+            handleFileChange(event) {
+              const file = event.target.files[0];
+              this.fileName = file ? file.name : 'No file chosen';
+            }
+          }
+        }
+      </script>
+@end
