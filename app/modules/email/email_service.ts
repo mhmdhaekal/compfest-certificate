@@ -21,6 +21,7 @@ export default class EmailService {
     for (let certificate of certificates) {
       let config: SendCertificatesConfig = {
         eventName: template.eventName,
+        awardName: template.awardName,
         recipientEmail: certificate.recipientEmail,
         recipientName: certificate.recipientName,
         certificateId: certificate.id,

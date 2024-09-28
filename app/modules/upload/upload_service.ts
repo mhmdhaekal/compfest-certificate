@@ -7,6 +7,7 @@ import InternalErrorException from '#exceptions/internal_error_exception'
 import { s3Disk } from '../../utils/disk_s3.js'
 import CertificateTemplate from '#models/certificate_template'
 import { kafkaProducer } from '../../utils/kafka.js'
+import env from '#start/env'
 
 @inject()
 export default class UploadService {
@@ -77,15 +78,21 @@ export default class UploadService {
     if (!certificates) {
       throw new NotFoundException('certificate template not found')
     }
+    await kafkaProducer.connect()
 
     for (let certificate of certificates.generatedCertificates) {
       if (!certificate.isUploaded) {
         let message = {
           certificateId: certificate.id,
         }
-        await kafkaProducer.produce('upload-certificate', message)
+        await kafkaProducer.send({
+          topic: `${env.get('KAFKA_TOPIC')}`,
+          messages: [{ value: JSON.stringify(message) }],
+        })
       }
     }
+
+    await kafkaProducer.disconnect()
     return certificates.generatedCertificates
   }
 }

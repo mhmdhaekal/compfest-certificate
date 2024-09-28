@@ -50,11 +50,12 @@ export default class CertificatesService {
     if (!template) {
       throw new NotFoundException(`template ${templateId} not found`)
     }
+    let templates: GeneratedCertificate[] = []
 
     for (let user of users) {
       let certificate = new GeneratedCertificate()
-      let descriptionEn = `The certificate above verifies that ${user.name} has participated in ${template.eventName}. If you feel there is an error in the certificate, please contact the relevant activity committee.`
-      let descriptionId = `Sertifikat di atas memverifikasi bahwa ${user.name} telah berpartisipasi dalam ${template.eventName}. Jika merasa ada kesalahan pada sertifikat, harap menghubungi panitia kegiatan terkait.`
+      let descriptionEn = `This certificate above verifies that ${user.name} has successfully completed ${template.eventName} as ${template.awardName}. The certificate indicates the entire event was completed and his/her participation is valid. If you feel there is an error in the certificate, please contact the relevant activity committee.`
+      let descriptionId = `Sertifikat di atas ini membuktikan bahwa ${user.name} berhasil menyelesaikan ${template.eventName} sebagai ${template.awardName}. Sertifikat menunjukkan seluruh kegiatan telah selesai dan partisipasi penerima adalah valid. Apabila dirasa ada kesalahan pada sertifikat, silakan hubungi kontak panitia kegiatan terkait.`
 
       certificate.id = this.generateCertificateId()
 
@@ -76,12 +77,15 @@ export default class CertificatesService {
       certificate.descriptionId = descriptionId
       certificate.certificateTemplateId = template.id
       certificate.issuedOn = DateTime.now()
-      await template.related('generatedCertificates').save(certificate)
+      templates.push(certificate)
     }
+
+    await template.related('generatedCertificates').saveMany(templates)
 
     return {
       templateId: template.id,
       users,
+      templates,
     }
   }
 

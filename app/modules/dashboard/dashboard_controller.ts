@@ -16,7 +16,7 @@ export default class DashboardController {
     }
     let certificateTemplate = await CertificateTemplate.query()
       .preload('department')
-      .orderBy('created_at', 'asc')
+      .orderBy('created_at', 'desc')
     let departments = await Department.all()
     return view.render('pages/index', { certificateTemplate, departments })
   }

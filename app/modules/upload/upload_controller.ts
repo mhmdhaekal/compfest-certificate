@@ -24,11 +24,7 @@ export default class UploadController {
     let generatedCertificates = await this.uploadService.uploadBatchCertificate({
       templateId: params.templateId,
     })
-    return new DefaultResponseBuilder<typeof generatedCertificates>()
-      .setData(generatedCertificates)
-      .setMessage('Successfully uploaded individual certificate')
-      .setSuccess(true)
-      .setStatusCode(200)
-      .build()
+
+    return '<p>Success upload</p>'
   }
 }

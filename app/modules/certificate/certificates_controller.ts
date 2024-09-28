@@ -2,9 +2,6 @@ import CertificatesService from './certificates_service.js'
 import { HttpContext } from '@adonisjs/core/http'
 import { inject } from '@adonisjs/core'
 import { createIndividualCertificateValidator } from '#certificate/validator/create_individual_certificate_validator'
-import BadRequestException from '#exceptions/bad_request_exception'
-import InternalErrorException from '#exceptions/internal_error_exception'
-import { DefaultResponseBuilder } from '../../utils/default_response_builder.js'
 
 @inject()
 export default class CertificatesController {
@@ -46,36 +43,30 @@ export default class CertificatesController {
     return response.send(template)
   }
 
-  async importCertificateFromCSV({ request, params }: HttpContext) {
+  async importCertificateFromCSV({ request, params, view }: HttpContext) {
     let csvFile = request.file('recipientData', {
       extnames: ['csv'],
     })
 
     if (!csvFile) {
-      return new BadRequestException('Please provide recipient data')
+      return '<p>Invalid CSV</p>'
     }
 
     if (!csvFile.isValid) {
-      return new BadRequestException('Please provide recipient data')
+      return '<p>Invalid CSV</p>'
     }
 
     let path = csvFile.tmpPath
 
     if (!path) {
-      return new InternalErrorException('Something wrong, please try again')
+      return '<p>Something wrong, please try again</p>'
     }
 
-    let res = await this.certificateService.processBatchCertificate({
+    let { templates } = await this.certificateService.processBatchCertificate({
       templateId: params.templateId,
       csvFilePath: path,
     })
-
-    return new DefaultResponseBuilder<typeof res>()
-      .setData(res)
-      .setMessage('Success parse user')
-      .setSuccess(true)
-      .setStatusCode(200)
-      .build()
+    return view.render('partial/dashboard/recipient', { recipients: templates })
   }
 
   async exportCertificatePdf({ params, response }: HttpContext) {
@@ -83,6 +74,7 @@ export default class CertificatesController {
       certificateId: params.certificateId,
     })
     response.safeHeader('Content-Type', 'application/pdf')
+    response.append('HX-Redirect', `/api/certificate/${params.certificateId}/pdf`)
     return response.send(pdfFile)
   }
 

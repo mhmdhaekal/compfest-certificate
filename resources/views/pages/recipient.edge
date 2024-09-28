@@ -1,24 +1,61 @@
 @layout.app()
 <div class="w-full overflow-scroll mx-auto px-4 py-8">
-    <h1 class="text-2xl font-bold mb-6">Recipients for {{ template.eventName }}</h1>
-    <div class="w-full overflow-x-auto bg-white shadow-md rounded-lg">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+        <div class="flex flex-row">
+            <h1 class="text-2xl font-bold">Recipients for {{ template.eventName }}</h1>
+            <a href="/"><button type="button" class="ml-2 bg-black hover:bg-black/80 text-white font-bold py-2 px-4 rounded">Back</button></a>
+        </div>
+        <div class="flex flex-row gap-10">
+            <div id="response-action"></div>
+            <button type="button" hx-target="#response-action" hx-trigger="click" class="ml-2 bg-black hover:bg-black/80 text-white font-bold py-2 px-4 rounded" hx-confirm="Are you sure want to start uploading?" hx-get="/api/upload/certificate-template/{{template.id}}">Upload</button>
+            <button type="button" hx-target="#response-action" hx-trigger="click" class="ml-2 bg-black hover:bg-black/80 text-white font-bold py-2 px-4 rounded" hx-confirm="Are you sure want to start Verify?" hx-get="/api/verify/certificate-template/{{template.id}}">Verify</button>
+            <button type="button" hx-target="#response-action" hx-trigger="click" class="ml-2 bg-black hover:bg-black/80 text-white font-bold py-2 px-4 rounded" hx-confirm="Are you sure want to start Email?" hx-get="/api/email/certificate-template/{{template.id}}">Email</button>
+            <form hx-post="/api/certificate/{{template.id}}/parse" 
+                  hx-target="#recipients-table" 
+                  hx-swap="innerHTML" 
+                  hx-encoding='multipart/form-data' 
+                  hx-indicator="#loading-indicator"
+                  class="mt-4 md:mt-0">
+                <div class="flex items-center">
+                    <input required type="file" name="recipientData" accept=".csv" class="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
+                    <button type="submit" class="ml-2 bg-black hover:bg-black/80 text-white font-bold py-2 px-4 rounded">
+                        Upload CSV
+                    </button>
+                </div>
+            </form> 
+        </div>
+
+        
+    </div>
+    
+    <div id="loading-indicator" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 items-center justify-center z-50">
+        <div class="bg-white p-4 rounded-lg shadow-xl">
+            <p class="text-lg font-semibold">Loading...</p>
+        </div>
+    </div>
+
+    <div id="table-wrapper" class="w-full overflow-x-auto bg-white shadow-md rounded-lg">
       <table class="min-w-full table-auto">
         <thead class="bg-gray-200">
           <tr>
-            <th class="px-4 py-2 text-left w-[300px]">No</th>
-            <th class="px-4 py-2 text-left w-[300px]">Recipient Name</th>
-            <th class="px-4 py-2 text-left w-[300px]">Email</th>
-            <th class="px-4 py-2 text-left w-[300px]">Award (ID)</th>
-            <th class="px-4 py-2 text-left w-[300px]">Award (EN)</th>
-            <th class="px-4 py-2 text-left w-[400px]">Activity Name (ID)</th>
-            <th class="px-4 py-2 text-left w-[400px]">Activity Name (EN)</th>
-            <th class="px-4 py-2 text-left w-[300px]">Issued On</th>
+            <th class="px-4 py-2 text-left">No</th>
+            <th class="px-4 py-2 text-left">Recipient Name</th>
+            <th class="px-4 py-2 text-left">Email</th>
+            <th class="px-4 py-2 text-left">Award (ID)</th>
+            <th class="px-4 py-2 text-left">Award (EN)</th>
+            <th class="px-4 py-2 text-left">Activity Name (ID)</th>
+            <th class="px-4 py-2 text-left">Activity Name (EN)</th>
+            <th class="px-4 py-2 text-left">Issued On</th>
+            <th class="px-4 py-2 text-left">Image Link</th>
+            <th class="px-4 py-2 text-left">PDF LInk</th>
+            <th class="px-4 py-2 text-left">Verify Link</th>
+            <th class="px-4 py-2 text-left">Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="recipients-table"> 
           @each((recipient, index) in recipients)
             <tr class="border-b hover:bg-gray-50">
-              <td class="px-4 py-2">{{ index+1 }}</td>
+              <td class="px-4 py-2">{{ index + 1 }}</td>
               <td class="px-4 py-2">{{ recipient.recipientName }}</td>
               <td class="px-4 py-2">{{ recipient.recipientEmail }}</td>
               <td class="px-4 py-2">{{ recipient.recipientAwardId }}</td>
@@ -32,10 +69,25 @@
                   N/A
                 @end
               </td>
+              <td><a hx-disabled href="{{recipient.jpgDownloadLink}}"><button class="ml-2 bg-black hover:bg-black/80 text-white font-bold py-2 px-4 rounded">Image Link</button></a></td>
+              <td><a hx-disabled href="{{recipient.pdfDownloadLink}}"><button class="ml-2 bg-black hover:bg-black/80 text-white font-bold py-2 px-4 rounded">PDF Link</button></a></td>
+              <td><a hx-disabled href="https://verify.compfest.id/{{recipient.id}}"><button class="ml-2 bg-black hover:bg-black/80 text-white font-bold py-2 px-4 rounded">Preview on Verify</button></a></td>
+              <td><a href="/api/certificate/{{recipient.id}}/pdf"><button class="ml-2 bg-black hover:bg-black/80 text-white font-bold py-2 px-4 rounded">Preview</button></a></td>
+              
             </tr>
           @end
         </tbody>
       </table>
     </div>
-  </div>
+</div>
+
+<script>
+    document.body.addEventListener('htmx:beforeRequest', function(event) {
+        document.getElementById('table-wrapper').classList.add('opacity-50');
+    });
+    document.body.addEventListener('htmx:afterRequest', function(event) {
+        document.getElementById('table-wrapper').classList.remove('opacity-50');
+    });
+</script>
+
 @end

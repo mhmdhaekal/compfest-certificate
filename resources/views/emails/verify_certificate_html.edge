@@ -3,37 +3,47 @@
 })
 <mjml>
   <mj-body background-color="#ffffff">
-    <mj-section  background-color="#ffffff">
+    <mj-section background-color="#ffffff">
       <mj-column background-color="#ffffff" border-radius="20px" border="1px solid #eaeaea" padding="10px">
         <mj-image src="https://asset.compfest.id/mail/header/compfest-16.png" alt="COMPFEST Logo" width="228px" padding="20px 0px 20px 0" />
 
         <mj-divider border-color="#eaeaea" border-width="1px" padding="20px 0" />
-        <mj-text>Halo, {{ name }}</mj-text>
-        <mj-text>Terima kasih telah berpartisipasi dalam acara {{ eventName }}.
-        Semoga
-         ilmu
-         yang dibagikan oleh para pembicara dapat bermanfaat.</mj-text>
-        <mj-text>Sebagai salah satu bentuk apresiasi, berikut kami lampirkan sertifikat elektronik untuk para peserta.</mj-text>
+        <mj-text>Halo, {{ name }},</mj-text>
+        <mj-text>
+          Terima kasih telah berpartisipasi dalam acara {{ eventName }}. Kami mengumumkan bahwa Anda telah berhasil menyelesaikan seluruh rangkaian kegiatan sebagai <strong>{{awardName}}</strong>. Sertifikat elektronik Anda terlampir sebagai bukti partisipasi dan pencapaian Anda.
+        </mj-text>
+        <mj-text>
+          Jika terdapat kesalahan pada sertifikat, silakan hubungi panitia melalui kontak yang tersedia. Kami berharap ilmu dan pengalaman yang Anda peroleh bermanfaat untuk Anda.
+        </mj-text>
         <mj-spacer height="25px"></mj-spacer>
-        <mj-button background-color="#000000" color="#ffffff"
-        font-size="16px" line-height="100%" border-radius="12px"
-        href="{{ link }}"
-        target="_blank">Get certificate!</mj-button>
+        <mj-button background-color="#000000" color="#ffffff" font-size="16px" line-height="100%" border-radius="12px" href="{{ link }}" target="_blank">
+          Dapatkan Sertifikat!
+        </mj-button>
 
-        <mj-text align="center">atau melalui link di bawah ini!</mj-text>
-        <mj-text align="center"><a href="{{ link }}" style="color:#067df7;
-        text-decoration:none" target="_blank">{{ link }}</a></mj-text>
+        <mj-text align="center">atau melalui link di bawah ini:</mj-text>
+        <mj-text align="center">
+          <a href="{{ link }}" style="color:#067df7; text-decoration:none" target="_blank">{{ link }}</a>
+        </mj-text>
         <mj-spacer height="25px"></mj-spacer>
-        <mj-text>Jangan lupa untuk ikut Virtual Playgrounds di website
-        COMPFEST dan menangkan hadiah menarik! Sampai jumpa di acara-acara
-        COMPFEST selanjutnya.</mj-text>
-        <mj-text>COMPFEST</mj-text>
-        <mj-text>{{ '@' }}COMPFEST</mj-text>
-        <mj-text>compfest.id</mj-text>
-        <mj-text>#ExpandTheHorizon</mj-text>
-        <mj-text>#COMPFEST16</mj-text>
+        <mj-text>Salam hangat,</mj-text>
+        <mj-text><strong>COMPFEST</strong></mj-text>
+
         <mj-divider border-color="#eaeaea" border-width="1px" padding="20px" />
-        <mj-text font-size="14px" line-height="24px" font-weight="400" color="#9CA3AF">COMPFEST 16</mj-text>
+        <mj-text font-size="14px" line-height="24px" font-weight="400" color="#9CA3AF">
+          COMPFEST 16
+        </mj-text>
+        <mj-text font-size="14px" line-height="24px" font-weight="400" color="#9CA3AF">
+          COMPFEST
+        </mj-text>
+
+        <mj-text font-size="14px" line-height="24px" font-weight="400" color="#9CA3AF">
+          {{ '@' }}COMPFEST</mj-text>
+        
+        <mj-text font-size="14px" line-height="24px" font-weight="400" color="#9CA3AF">
+          compfest.id</mj-text>
+        
+        <mj-text font-size="14px" line-height="24px" font-weight="400" color="#9CA3AF">
+          #ExpandTheHorizon</mj-text>
       </mj-column>
     </mj-section>
   </mj-body>

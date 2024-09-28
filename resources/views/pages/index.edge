@@ -45,7 +45,7 @@
             @each(certificate in certificateTemplate)
                 <div class="bg-white shadow-lg rounded-xl overflow-hidden">
                     <div class="p-4">
-                        <h3 class="text-xl font-semibold mb-4">{{certificate.eventName}}</h3>
+                        <h3 class="text-xl font-semibold mb-4">{{certificate.eventName}} - {{certificate.awardName}}</h3>
                         <div class="flex flex-col md:flex-row gap-6">
                             <div class="w-full md:w-2/3">
                                 <img class="w-full h-auto rounded-lg" src="{{certificate.imageUrl}}" alt="{{certificate.eventName}}" loading="lazy" decoding="async"/>

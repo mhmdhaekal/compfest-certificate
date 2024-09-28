@@ -6,7 +6,7 @@ export default class SendCertificateNotification extends BaseMail {
   constructor(config: SendCertificatesConfig) {
     super()
     this.config = config
-    this.subject = `Sertifikat ${this.config.eventName}`
+    this.subject = `Sertifikat ${this.config.eventName} - ${this.config.awardName}`
   }
 
   declare config: SendCertificatesConfig
@@ -24,6 +24,7 @@ export default class SendCertificateNotification extends BaseMail {
       eventName: this.config.eventName,
       link,
       certificateId: this.config.certificateId,
+      awardName: this.config.awardName,
     })
 
     this.message.textView('emails/verify_certificate_text', {

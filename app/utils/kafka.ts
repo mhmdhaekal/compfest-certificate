@@ -1,10 +1,11 @@
-import { Kafka } from '@upstash/kafka'
+import { Kafka, Partitioners } from 'kafkajs'
 import env from '#start/env'
 
 const kafka = new Kafka({
-  url: env.get('UPSTASH_KAFKA_REST_URL'),
-  username: env.get('UPSTASH_KAFKA_REST_USERNAME'),
-  password: env.get('UPSTASH_KAFKA_REST_PASSWORD'),
+  clientId: 'compfest-certificate',
+  brokers: [`${env.get('KAFKA_BROKER')}`],
 })
 
-export const kafkaProducer = kafka.producer()
+export const kafkaProducer = kafka.producer({
+  createPartitioner: Partitioners.LegacyPartitioner,
+})

@@ -38,12 +38,11 @@ export default await Env.create(new URL('../', import.meta.url), {
   AWS_ACCESS_SECRET: Env.schema.string(),
   AWS_REGION: Env.schema.string(),
   AWS_BUCKET: Env.schema.string(),
-  UPSTASH_KAFKA_REST_URL: Env.schema.string(),
-  UPSTASH_KAFKA_REST_USERNAME: Env.schema.string(),
-  UPSTASH_KAFKA_REST_PASSWORD: Env.schema.string(),
   SES_ACCESS_KEY: Env.schema.string(),
   SES_ACCESS_SECRET: Env.schema.string(),
   SES_REGION: Env.schema.string(),
+  KAFKA_BROKER: Env.schema.string(),
+  KAFKA_TOPIC: Env.schema.string(),
 
   /*
   |----------------------------------------------------------

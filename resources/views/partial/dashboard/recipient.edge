@@ -1,0 +1,23 @@
+
+@each((recipient, index) in recipients)
+<tr class="border-b hover:bg-gray-50">
+  <td class="px-4 py-2">{{ index+1 }}</td>
+  <td class="px-4 py-2">{{ recipient.recipientName }}</td>
+  <td class="px-4 py-2">{{ recipient.recipientEmail }}</td>
+  <td class="px-4 py-2">{{ recipient.recipientAwardId }}</td>
+  <td class="px-4 py-2">{{ recipient.recipientAwardEn }}</td>
+  <td class="px-4 py-2">{{ recipient.activityNameId }}</td>
+  <td class="px-4 py-2">{{ recipient.activityNameEn }}</td>
+  <td class="px-4 py-2">
+    @if(recipient.issuedOn && typeof recipient.issuedOn.toFormat === 'function')
+      {{ recipient.issuedOn.toFormat('dd LLL yyyy') }}
+    @else
+      N/A
+    @end
+  </td>
+  <td><a hx-disabled href="{{recipient.jpgDownloadLink}}"><button class="ml-2 bg-black hover:bg-black/80 text-white font-bold py-2 px-4 rounded">Image Link</button></a></td>
+  <td><a hx-disabled href="{{recipient.pdfDownloadLink}}"><button class="ml-2 bg-black hover:bg-black/80 text-white font-bold py-2 px-4 rounded">PDF Link</button></a></td>
+  <td><a hx-disabled href="https://verify.compfest.id/{{recipient.id}}"><button class="ml-2 bg-black hover:bg-black/80 text-white font-bold py-2 px-4 rounded">Preview on Verify</button></a></td>
+  <td><a href="/api/certificate/{{recipient.id}}/pdf"></a><button class="ml-2 bg-black hover:bg-black/80 text-white font-bold py-2 px-4 rounded">Preview</button></a></td>
+</tr>
+@end

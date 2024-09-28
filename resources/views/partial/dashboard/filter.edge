@@ -45,13 +45,17 @@
                         <span>{{certificate.department.nameId}}</span>
                     </div>
 
-                    <div class="">
+                    <div class="flex flex-col gap-2">
                         <form hx-post="/api/certificate/{{certificate.id}}" hx-target="#pdf-response">
                             {{ csrfField() }}
                             <input type="hidden" name="name" id="name" value="{{auth.user.fullName}}"/>
                             <button type="submit" class="bg-black px-2 py-1 rounded-lg font-semibold text-white">Preview</button>
                         </form>
                         <div id="pdf-response"></div>
+
+                        <a href="/certificate/{{certificate.id}}/recipient">
+                            <button type="button" class="bg-black px-2 py-1 rounded-lg font-semibold text-white">Generated Recipient</button>
+                        </a>
                     </div>
                 </div>
             </div>
