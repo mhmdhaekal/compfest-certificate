@@ -21,7 +21,7 @@ export default class UploadController {
   }
 
   async uploadBatchCertificate({ params }: HttpContext) {
-    let generatedCertificates = await this.uploadService.uploadBatchCertificate({
+    await this.uploadService.uploadBatchCertificate({
       templateId: params.templateId,
     })
 
